@@ -21,7 +21,13 @@ from pages import views
 urlpatterns = [
    
     path('admin/', admin.site.urls),
-     path('', views.view_task),
-    path('pages/', views.add_task),
-    path('task/', views.add_task),
+  
+    # path('pages/', views.add_task),
+    # path('task/', views.add_task),
+
+
+    path('', views.view_task, name='view_task'),
+    path('update/<int:id>/', views.update_task, name='update_task'),
+    path('delete/<int:id>/', views.delete_task, name='delete_task'),
 ]
+

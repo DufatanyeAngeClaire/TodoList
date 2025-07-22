@@ -13,9 +13,6 @@ from django.utils import timezone
 # Functionality to change the status of a task (e.g., mark as completed or pending). This could be a link/button next to each task.
 # 4- Delete Task: 
 # Functionality to remove a task from the list. This could be a link/button next to each task
-def view_task(request):
-    all_task = Task.objects.all
-    return render(request, 'view_task.html', {'all': all_task})
 
 def add_task(request):
     if request.method == "POST":
@@ -39,3 +36,22 @@ def add_task(request):
 
     # For GET requests — render the form page
     return render(request, "add_task.html")
+
+def view_task(request):
+    all_task = Task.objects.all()
+    return render(request, 'view_task.html', {'all': all_task})
+
+def delete_task(request, id):
+    task = Task.objects.get(id=id)
+    task.delete()
+    return redirect('view_task')
+
+def update_task(request, id):
+    task = Task.objects.get(id=id)
+    if request.method == 'POST':
+        task.title = request.POST['title']
+        task.describtion = request.POST['description']
+        task.status = request.POST['status']
+        task.save()
+        return redirect('view_task')
+    return render(request, 'update_task.html', {'task': task})

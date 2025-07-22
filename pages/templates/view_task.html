@@ -1,22 +1,51 @@
-
+{% load static %}
 <!DOCTYPE html>
-
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
-    </head>
-    <body>
-       <h1>All Tasks</h1>
-         <ul>
-        {% for task in all %}
-            <li>{{ task.title }} | {{ task.describtion }} | {{ task.status }} | {{ task.date }}</li>
-        {% endfor %}
-    </ul>
-        <script src="" async defer></script>
-    </body>
+<head>
+    <meta charset="utf-8">
+    <title>All Tasks</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/bootstrap-5.3.7-dist/css/bootstrap.min.css">
+</head>
+<body class="container mt-5">
+    <h1 class="text-center mb-4">All Tasks</h1>
+
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in all %}
+            <tr>
+                <td>{{ task.title }}</td>
+                <td>{{ task.description }}</td>
+                <td>{{ task.status }}</td>
+                <td>{{ task.date }}</td>
+                <td>
+                    <a href="{% url 'update_task' task.id %}" class="btn btn-sm btn-warning">Update</a>
+
+                    <form action="{% url 'delete_task' task.id %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center">No tasks found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script src="/static/bootstrap-5.3.7-dist/js/bootstrap.bundle.js" async defer></script>
+</body>
 </html>
+
+
